@@ -14,8 +14,7 @@ authors = ["Erlend Langseth <3rlendhl@gmail.com>", "Sebastian Köln <s3bk@proton
 repository = "https://github.com/pdf-rs/pdf"
 keywords = ["pdf"]
 readme = "README.md"
-edition = "2018"
-description = "PDF reader"
+edition = "2021"
 
 
 [workspace.dependencies]
