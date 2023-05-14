@@ -1,0 +1,19 @@
+[package]
+name = "pdf2image"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+license.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pdf.path = "../../pdf"
+pdf_render.path = "../../render"
+argh = "*"
+pathfinder_rasterize = { git = "https://github.com/s3bk/pathfinder_rasterizer" }
+pathfinder_geometry = { git = "https://github.com/servo/pathfinder" }
+env_logger = "*"

@@ -1,12 +1,12 @@
 [package]
 name = "pdf_derive"
-version = "0.1.22"
-authors = ["Erlend Langseth <3rlendhl@gmail.com>", "Sebastian Köln <s3bk@protonmail.com>"]
-homepage = "https://github.com/pdf-rs"
-repository = "https://github.com/pdf-rs/pdf_derive"
-description = "helper for pdf-rs."
-license = "MIT"
-edition = "2018"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+license.workspace = true
+edition.workspace = true
 
 [dependencies]
 syn = { version = "1", features = ["full", "extra-traits"] }
