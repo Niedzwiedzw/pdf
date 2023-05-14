@@ -35,8 +35,8 @@ sha2 = "0.10.2"
 fax = "0.2.0"
 euclid = { version = "0.22.7", optional = true }
 bitflags = "1.3"
-istring = { version = "0.3.2", git = "https://github.com/s3bk/istring", features = ["std", "size"] }
-datasize = { git = "https://github.com/s3bk/datasize-rs" }
+istring.workspace = true
+datasize.version = "0.2.13"
 globalcache = { version = "0.2", features = ["sync"] }
 
 [dev-dependencies]

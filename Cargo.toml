@@ -22,6 +22,8 @@ pdf.path = "pdf"
 pdf_derive.path = "pdf_derive"
 render.path = "render"
 view.path = "view"
+globalcache = { git = "https://github.com/s3bk/cachelib", features = ["sync"] }
+istring = { version = "0.3.2", git = "https://github.com/s3bk/istring", features = ["std", "size"] }
 
 [patch.crates-io]
 pathfinder_gl = { git = "https://github.com/servo/pathfinder" }
