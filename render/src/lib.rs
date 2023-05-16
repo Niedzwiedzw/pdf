@@ -104,12 +104,15 @@ pub fn render_page(
 
     let resources = t!(page.resources());
 
-    let contents = try_opt!(page.contents.as_ref());
-    let ops = contents.operations(resolve)?;
-    let mut renderstate = RenderState::new(backend, resolve, &resources, root_transformation);
-    for (i, op) in ops.iter().enumerate() {
-        debug!("op {}: {:?}", i, op);
-        renderstate.draw_op(op)?;
+    if let Some(contents) = page.contents.as_ref() {
+        let ops = contents.operations(resolve)?;
+        let mut renderstate = RenderState::new(backend, resolve, &resources, root_transformation);
+        for (i, op) in ops.iter().enumerate() {
+            debug!("op {}: {:?}", i, op);
+            renderstate.draw_op(op)?;
+        }
+    } else {
+        warn!("no operations!");
     }
 
     Ok(root_transformation)
