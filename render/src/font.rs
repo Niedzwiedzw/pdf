@@ -1,15 +1,15 @@
-use std::path::{PathBuf};
-use std::ops::Deref;
-use std::collections::HashMap;
+use pdf::error::{PdfError, Result};
+use pdf::font::Font as PdfFont;
 use pdf::object::*;
-use pdf::font::{Font as PdfFont};
-use pdf::error::{Result, PdfError};
+use std::collections::HashMap;
+use std::ops::Deref;
+use std::path::PathBuf;
 
-use font::{self};
-use std::sync::Arc;
 use super::FontEntry;
+use font::{self};
 use globalcache::{sync::SyncCache, ValueSize};
 use std::hash::{Hash, Hasher};
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct FontRc(Arc<dyn font::Font + Send + Sync + 'static>);
@@ -53,7 +53,8 @@ pub struct StandardCache {
 impl StandardCache {
     pub fn new(dir: PathBuf) -> Self {
         let data = std::fs::read_to_string(dir.join("fonts.json")).expect("can't read fonts.json");
-        let fonts: HashMap<String, String> = serde_json::from_str(&data).expect("fonts.json is invalid");
+        let fonts: HashMap<String, String> =
+            serde_json::from_str(&data).expect("fonts.json is invalid");
 
         StandardCache {
             inner: SyncCache::new(),
@@ -63,17 +64,23 @@ impl StandardCache {
     }
 }
 
-pub fn load_font(font_ref: &MaybeRef<PdfFont>, resolve: &impl Resolve, cache: &StandardCache) -> Result<Option<FontEntry>> {
+pub fn load_font(
+    font_ref: &MaybeRef<PdfFont>,
+    resolve: &impl Resolve,
+    cache: &StandardCache,
+) -> Result<Option<FontEntry>> {
     let pdf_font = font_ref.clone();
     debug!("loading {:?}", pdf_font);
-    
+
     let font: FontRc = match pdf_font.embedded_data(resolve) {
         Some(Ok(data)) => {
             let font = font::parse(&data).map_err(|e| {
-                let name = format!("font_{}", pdf_font.name.as_ref().map(|s| s.as_str()).unwrap_or("unnamed"));
-                std::fs::write(&name, &data).unwrap();
-                println!("font dumped in {}", name);
-                PdfError::Other { msg: format!("Font Error: {:?}", e) }
+                // let name = format!("font_{}", pdf_font.name.as_ref().map(|s| s.as_str()).unwrap_or("unnamed"));
+                // std::fs::write(&name, &data).unwrap();
+                // println!("font dumped in {}", name);
+                PdfError::Other {
+                    msg: format!("Font Error: {:?}", e),
+                }
             })?;
             FontRc::from(font)
         }
@@ -81,7 +88,7 @@ pub fn load_font(font_ref: &MaybeRef<PdfFont>, resolve: &impl Resolve, cache: &S
         None => {
             let name = match pdf_font.name {
                 Some(ref name) => name.as_str(),
-                None => return Ok(None)
+                None => return Ok(None),
             };
             match cache.fonts.get(name).or_else(|| cache.fonts.get("Arial")) {
                 Some(file_name) => {
